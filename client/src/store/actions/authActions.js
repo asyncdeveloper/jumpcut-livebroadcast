@@ -16,6 +16,19 @@ export const signUp = (newUser) => {
     };
 };
 
+export const signIn = (credentials) => {
+    return async (dispatch, getState, { getFirebase }) => {
+        const firebase = getFirebase();
+
+        try {
+            await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
+            dispatch(loginSuccess());
+        } catch (error) {
+            dispatch(loginFailed(error));
+        }
+    };
+};
+
 export function authenticationSuccess() {
     return {
         type: 'SIGNUP_SUCCESS'
@@ -24,6 +37,17 @@ export function authenticationSuccess() {
 export function authenticationFailed(error) {
     return {
         type: 'SIGNUP_FAILURE' , error
+    };
+}
+
+export function loginSuccess() {
+    return {
+        type: 'SIGNIN_SUCCESS'
+    };
+}
+export function loginFailed(error) {
+    return {
+        type: 'SIGNIN_FAILURE' , error
     };
 }
 
