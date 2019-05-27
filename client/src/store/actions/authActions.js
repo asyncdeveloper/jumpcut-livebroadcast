@@ -9,10 +9,21 @@ export const signUp = (newUser) => {
             await firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
             delete newUser.password;
             await firestore.collection(constants.REF_COLLECTION_USERS).set(newUser);
-            dispatch({ type: 'SIGNUP_SUCCESS' });
+            dispatch(authenticationSuccess());
         } catch (error) {
-            dispatch({ type: 'SIGNUP_FAILURE', error });
+            dispatch(authenticationFailed(error));
         }
     };
 };
+
+export function authenticationSuccess() {
+    return {
+        type: 'SIGNUP_SUCCESS'
+    };
+}
+export function authenticationFailed(error) {
+    return {
+        type: 'SIGNUP_FAILURE' , error
+    };
+}
 
