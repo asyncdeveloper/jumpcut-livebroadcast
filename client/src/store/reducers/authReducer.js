@@ -8,7 +8,6 @@ const authReducer = (state = initialState , action) => {
                 ...state,
                 authError: null
             };
-
         case 'SIGNUP_FAILURE':
             return {
                 ...state,
