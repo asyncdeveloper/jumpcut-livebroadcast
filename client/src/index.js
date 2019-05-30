@@ -11,12 +11,25 @@ import firebase from './config/firebase';
 import { getFirebase, reactReduxFirebase } from "react-redux-firebase";
 import { reduxFirestore } from "redux-firestore";
 
-const store = createStore(
-    rootReducer,
+// const store = createStore(
+//     rootReducer,
+//     compose(
+//         applyMiddleware(thunk.withExtraArgument({getFirebase})),
+//         reduxFirestore(firebase),
+//         reactReduxFirebase(firebase )
+//     )
+// );
+//
+// ReactDOM.render(
+//     <Provider store={store}> <App /> </Provider>,
+//     document.getElementById('root')
+// );
+
+const store = createStore(rootReducer,
     compose(
         applyMiddleware(thunk.withExtraArgument({getFirebase})),
-        reduxFirestore(firebase),
-        reactReduxFirebase(firebase )
+        reactReduxFirebase(firebase, {userProfile: 'users', useFirestoreForProfile: true, attachAuthIsReady: true}),
+        reduxFirestore(firebase)
     )
 );
 
