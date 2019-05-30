@@ -5,6 +5,8 @@ import {
     signIn,
     SIGNIN_FAILURE,
     SIGNIN_SUCCESS,
+    signOut,
+    SIGNOUT_SUCCESS,
     signUp,
     SIGNUP_FAILURE,
     SIGNUP_SUCCESS
@@ -29,6 +31,11 @@ jest.mock('../config/firebase', () => ({
                     resolve({ type: 'SIGNUP_SUCCESS' });
                 }
                 reject(Error('create user error'));
+            });
+        },
+        signOut() {
+            return new Promise((resolve) => {
+                resolve({ type: 'SIGNOUT_SUCCESS' });
             });
         }
     }),
@@ -88,6 +95,14 @@ describe('AuthActions', () => {
         }];
 
         await store.dispatch(signUp(userCredentials));
+
+        expect(store.getActions()).toEqual(expectedResponse);
+    });
+
+    it('authActions should allow user logout', async () => {
+        const expectedResponse =  [{ type: SIGNOUT_SUCCESS }];
+
+        await store.dispatch(signOut());
 
         expect(store.getActions()).toEqual(expectedResponse);
     });

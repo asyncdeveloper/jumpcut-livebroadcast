@@ -1,5 +1,12 @@
 import authReducer from '../store/reducers/authReducer';
-import { SIGNIN_FAILURE, SIGNIN_SUCCESS, SIGNUP_FAILURE, SIGNUP_SUCCESS } from "../store/actions/authActions";
+import {
+    SIGNIN_FAILURE,
+    SIGNIN_SUCCESS,
+    SIGNOUT_FAILURE,
+    SIGNOUT_SUCCESS,
+    SIGNUP_FAILURE,
+    SIGNUP_SUCCESS
+} from "../store/actions/authActions";
 
 describe('authReducer', () => {
 
@@ -45,6 +52,25 @@ describe('authReducer', () => {
         const signInActions = { type: SIGNIN_FAILURE,  error: errorMockData };
 
         expect(authReducer({}, signInActions)).toEqual({
+            authError : errorMockData.message
+        });
+    });
+
+    it('should handle SIGNOUT_SUCCESS', () => {
+        const signOutActions = { type: SIGNOUT_SUCCESS };
+
+        expect(authReducer({}, signOutActions)).toEqual({});
+    });
+
+    it('should handle SIGNOUT_FAILURE', () => {
+        const errorMockData = {
+            code: "user not found",
+            message: "The user does not exist"
+        };
+
+        const signOutActions = { type: SIGNOUT_FAILURE,  error: errorMockData };
+
+        expect(authReducer({}, signOutActions)).toEqual({
             authError : errorMockData.message
         });
     });
