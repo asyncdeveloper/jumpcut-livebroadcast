@@ -11,10 +11,15 @@ export const SIGNOUT_FAILURE = 'SIGNOUT_FAILURE';
 export const signUp = (newUser) => {
     return async (dispatch) => {
         try {
-            await firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
-            delete newUser.password;
-            await firebase.firestore().collection(constants.REF_COLLECTION_USERS).set(newUser);
-            dispatch( { type: SIGNUP_SUCCESS });
+            const response = await firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
+
+            await firebase.firestore().collection(constants.REF_COLLECTION_USERS)
+                .doc(response.user.uid).set({
+                    firstName: newUser.firstName,
+                    lastName: newUser.lastName,
+                    initials: newUser.firstName[0] + newUser.lastName[0]
+                });
+            dispatch({type: SIGNUP_SUCCESS});
         } catch (error) {
             dispatch( { type: SIGNUP_FAILURE, error });
         }
