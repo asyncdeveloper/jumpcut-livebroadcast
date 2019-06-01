@@ -9,36 +9,25 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import firebase from './config/firebase';
 import { getFirebase, reactReduxFirebase } from "react-redux-firebase";
-import { reduxFirestore } from "redux-firestore";
-
-// const store = createStore(
-//     rootReducer,
-//     compose(
-//         applyMiddleware(thunk.withExtraArgument({getFirebase})),
-//         reduxFirestore(firebase),
-//         reactReduxFirebase(firebase )
-//     )
-// );
-//
-// ReactDOM.render(
-//     <Provider store={store}> <App /> </Provider>,
-//     document.getElementById('root')
-// );
+import { getFirestore, reduxFirestore } from "redux-firestore";
 
 const store = createStore(rootReducer,
     compose(
-        applyMiddleware(thunk.withExtraArgument({getFirebase})),
-        reactReduxFirebase(firebase, {userProfile: 'users', useFirestoreForProfile: true, attachAuthIsReady: true}),
-        reduxFirestore(firebase)
+        applyMiddleware(thunk.withExtraArgument({getFirebase, getFirestore})),
+        reduxFirestore(firebase),
+        reactReduxFirebase(firebase, {userProfile: 'users', useFirestoreForProfile: true, attachAuthIsReady: true})
     )
 );
 
-ReactDOM.render(
-    <Provider store={store}> <App /> </Provider>,
-    document.getElementById('root')
-);
+store.firebaseAuthIsReady.then(() => {
+    ReactDOM.render(
+        <Provider store={store}><App /></Provider>,
+        document.getElementById('root')
+    );
+    serviceWorker.unregister();
+});
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
