@@ -26,21 +26,34 @@ export class CreateBroadcast extends Component {
         let userId = this.props.auth.uid;
 
         let broadcastId = '';
-        while(broadcastId.length<6) {
-            broadcastId+= title[Math.floor(Math.random() * title.length)];
-            broadcastId+= userId[Math.floor(Math.random() * userId.length)];
+        while (broadcastId.length < 6) {
+            broadcastId += title[Math.floor(Math.random() * title.length)];
+            broadcastId += userId[Math.floor(Math.random() * userId.length)];
         }
 
         const broadcast = {
-            'brocastId': broadcastId,
-            'title' : title,
+            'broadcastId': broadcastId,
+            'title': title,
             'user': {
                 'id': userId,
                 'name': `${this.props.profile.firstName} ${this.props.profile.lastName}`
-            }
+            },
+            'isEnded': false
         };
 
-        this.props.createBroadcast(broadcast);
+        await this.props.createBroadcast(broadcast);
+
+        if(this.props.broadcastError === null) {
+
+            localStorage.setItem('user', broadcast.user.name);
+            localStorage.setItem('broadcastId', broadcast.broadcastId);
+
+            this.props.history.push({
+                pathname: `/broadcast/${broadcast.title}`,
+                state: {broadcast},
+                search: `?id=${broadcast.brodcastId}`,
+            });
+        }
     };
 
     render() {
