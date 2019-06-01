@@ -29,7 +29,7 @@ export class SignIn extends Component {
 
         //Redirect if user is logged in
         if (auth)
-            if (auth.id || auth.uid)
+            if (auth.uid)
                 return <Redirect to='/' />;
 
         return (
