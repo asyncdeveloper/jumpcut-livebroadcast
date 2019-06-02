@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import Script from 'react-load-script';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, isEmpty, isLoaded } from "react-redux-firebase";
+import { endBroadcast } from "../store/actions/broadcastActions";
+import { Redirect } from "react-router-dom";
 
 export class ViewBroadcast extends Component {
 
@@ -35,70 +37,81 @@ export class ViewBroadcast extends Component {
         document.getElementsByTagName("body")[0].appendChild(script);
     }
 
+    handleEndBroadcast = async () => {
+        await this.props.endBroadcast(this.props.broadcast[0].id);
+
+        if(this.props.broadcastError === null) {
+            localStorage.removeItem('user',);
+            localStorage.removeItem('broadcastId');
+            return <Redirect to="/"/>;
+        }
+    };
+
     render() {
-        const { auth, broadcasts } = this.props;
+        const { auth, broadcast, broadcastError } = this.props;
 
-        if(broadcasts !== undefined) {
-
-            if(broadcasts.length === 1) {
-                if(broadcasts[0].isEnded){
-                    return (
-                        'Broadcast ended '
-                    )
-                }else {
-                    return (
-                        <div className="container">
+        if(isLoaded(broadcast)) {
+            return  (
+                <div className="container">
+                    { isEmpty(broadcast)
+                        ? 'Broadcast not found'
+                        : <div className="broadcast-container">
                             <h1 />
-                            <section className="make-center">
+                            <section className="make-center start-broadcast">
                                 <div className="make-center">
-                                    <input type="hidden" id="broadcast-id" value="" size="20" />
                                     <div className="make-center" id="broadcast-viewers-counter" />
                                 </div>
                                 <video id="video-preview" controls loop />
                             </section>
-                            {
-                                broadcasts[0].user.id === auth.uid
-                                    ?
-                                    <section className="make-center col">
-                                        <br />
-                                        <a>End Broadcast</a>
-                                    </section>
-                                    : null
+                            { broadcast[0].user.id === auth.uid
+                                ? <section className="make-center col end-broadcast">
+                                    <br />
+                                    <a id="logout-button" href="#" onClick={this.handleEndBroadcast}>End Broadcast</a>
+                                </section>
+                                : null
                             }
                             <Script url="https://rtcmulticonnection.herokuapp.com/node_modules/webrtc-adapter/out/adapter.js"/>
                             <Script url="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js" />
-                            {
-                                this.loadScript('https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js',() => {
+                            { this.loadScript('https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js',() => {
                                     this.loadScript(`${window.location.origin}/custom.js`,() => {})
-                                })
-                            }
+                            })}
+                            <div className="center red-text">
+                                { broadcastError ? <p>{broadcastError}</p> : null }
+                            </div>
                         </div>
-                    );
-                }
-            } else {
-                return ( 'Live Doesnt Exist');
-            }
-        }else {
-            return ('Loading icon')
+                    }
+                </div>
+            )
+        } else {
+            return ('Loading');
         }
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        broadcast: state.firestore.ordered.broadcasts,
+        broadcast: state.firestore.ordered.broadcast,
         auth: state.firebase.auth,
     }
 };
 
-export default compose(connect(mapStateToProps),
+const mapDispatchToProps = dispatch => {
+    return {
+        endBroadcast: (broadcastId) => dispatch(endBroadcast(broadcastId))
+    }
+};
+
+export default compose(connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect(() => {
         const broadcastId =  ViewBroadcast.getUrlParameter('id');
-        if (broadcastId) {
-            return [
-                { collection: 'broadcasts', where:
-                    [ 'broadcastId', '==', broadcastId ]
-                }
+        return [ {
+            collection: 'broadcasts',
+            storeAs: 'broadcast',
+            limit: 1,
+            where: [
+                ['broadcastId', '==', broadcastId],
+                ['isEnded', '==', false],
             ]
-        }
-    }))(ViewBroadcast);
+        } ];
+    })
+)(ViewBroadcast);

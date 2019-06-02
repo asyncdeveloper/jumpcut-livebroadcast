@@ -7,20 +7,18 @@ const SignedInLinks = (props) => {
     return (
         <div>
             <ul className="right">
+                <li><NavLink to='/broadcast'>Create Broadcast</NavLink> </li>
                 <li>
-                    <NavLink to='/broadcast'>Create Broadcast</NavLink>
-                </li>
-                <li>
-                    <a id="logout-button" href="#" onClick={ () => {
+                    <a id="logout-button" onClick={ () => {
                             props.signOut();
                             return <Redirect to="/" />;
                        }}
                     >Log Out</a>
                 </li>
                 <li>
-                    <div>
-                        {props.profile.firstName}
-                    </div>
+                    <NavLink to='/' className="btn btn-floating pink lighten-2">
+                         {props.profile.initials}
+                    </NavLink>
                 </li>
             </ul>
         </div>

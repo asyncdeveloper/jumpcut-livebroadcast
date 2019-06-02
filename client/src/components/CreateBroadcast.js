@@ -51,7 +51,7 @@ export class CreateBroadcast extends Component {
             this.props.history.push({
                 pathname: `/broadcast/${broadcast.title}`,
                 state: {broadcast},
-                search: `?id=${broadcast.brodcastId}`,
+                search: `?id=${broadcast.broadcastId}`,
             });
         }
     };
