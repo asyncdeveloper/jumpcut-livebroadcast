@@ -1,5 +1,9 @@
 import broadcastReducer from '../store/reducers/broadcastReducer';
-import { BROADCAST_CREATE_FAILURE, BROADCAST_CREATE_SUCCESS } from "../store/actions/broadcastActions";
+import {
+    BROADCAST_CREATE_FAILURE,
+    BROADCAST_CREATE_SUCCESS,
+    END_BROADCAST_SUCCESS
+} from "../store/actions/broadcastActions";
 
 describe('broadcastReducer', () => {
 
@@ -8,9 +12,9 @@ describe('broadcastReducer', () => {
     });
 
     it('should handle BROADCAST_CREATE_SUCCESS', () => {
-        const creatBroadcastActions = { type: BROADCAST_CREATE_SUCCESS };
+        const createBroadcastActions = { type: BROADCAST_CREATE_SUCCESS };
 
-        expect(broadcastReducer({}, creatBroadcastActions)).toEqual({
+        expect(broadcastReducer({}, createBroadcastActions)).toEqual({
             broadcastError : null
         });
     });
@@ -21,10 +25,18 @@ describe('broadcastReducer', () => {
             message: "The broadcast cannot be saved"
         };
 
-        const creatBroadcastActions = { type: BROADCAST_CREATE_FAILURE,  error: errorMockData };
+        const createBroadcastActions = { type: BROADCAST_CREATE_FAILURE,  error: errorMockData };
 
-        expect(broadcastReducer({}, creatBroadcastActions)).toEqual({
+        expect(broadcastReducer({}, createBroadcastActions)).toEqual({
             broadcastError : errorMockData.message
+        });
+    });
+
+    it('should handle END_BROADCAST_SUCCESS', () => {
+        const endBroadcastActions = { type: END_BROADCAST_SUCCESS };
+
+        expect(broadcastReducer({}, endBroadcastActions)).toEqual({
+            broadcastError : null
         });
     });
 
