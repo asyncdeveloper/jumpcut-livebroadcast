@@ -13,16 +13,6 @@ const authReducer = (state = initialState , action) => {
                 ...state,
                 authError: action.error.message
             };
-        case 'SIGNIN_SUCCESS':
-            return {
-                ...state,
-                authError: null
-            };
-        case 'SIGNIN_FAILURE':
-            return {
-                ...state,
-                authError: action.error.message
-            };
         default:
             return state;
     }
