@@ -5,8 +5,7 @@ import { signOut } from '../store/actions/authActions'
 
 const SignedInLinks = (props) => {
     return (
-        <div>
-            <ul className="right">
+        <ul id="nav-mobile" className="right">
                 <li><NavLink to='/broadcast'>Create Broadcast</NavLink> </li>
                 <li>
                     <a id="logout-button" onClick={ () => {
@@ -21,7 +20,6 @@ const SignedInLinks = (props) => {
                     </NavLink>
                 </li>
             </ul>
-        </div>
     )
 };
 

@@ -6,17 +6,17 @@ import { connect } from 'react-redux'
 
 export const Navbar = (props) => {
     const { auth, profile } = props;
-    const links = auth.uid ? <SignedInLinks profile={profile}/> : <SignedOutLinks/>;
+    const headerLinks = auth.uid ? <SignedInLinks profile={profile}/> : <SignedOutLinks/>;
 
     return (
-        <nav className="nav-wrapper grey darken-3">
-            <div className="container">
-                <div className="left">
-                    <Link to='/' className="brand-logo">Jump Cut Live Broad</Link>
+        <div className="navbar-fixed">
+            <nav className="nav-wrapper grey darken-3">
+                <div className="nav-wrapper">
+                    <Link to='/' className="brand-logo hide-on-med-and-down">Jump Cut Live Broad</Link>
+                    {headerLinks}
                 </div>
-                {links}
-            </div>
-        </nav>
+            </nav>
+        </div>
     )
 };
 
