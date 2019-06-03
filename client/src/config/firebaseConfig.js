@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-export const fbConfig = {
+const fbConfig = {
     apiKey: "AIzaSyCNksFsRI8aqs7xfhwq3Te5VysHBYEAvws",
     authDomain: "jumpcut-livebroadcast.firebaseapp.com",
     databaseURL: "https://jumpcut-livebroadcast.firebaseio.com",

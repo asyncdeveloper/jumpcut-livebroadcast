@@ -1,31 +1,53 @@
 import constants from '../../config/constants';
-import firebase from '../../config/firebase';
-
-export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
-export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
-export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
-export const SIGNIN_FAILURE = 'SIGNIN_FAILURE';
 
 export const signUp = (newUser) => {
-    return async (dispatch) => {
+    return async (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
         try {
             await firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password);
             delete newUser.password;
-            await firebase.firestore().collection(constants.REF_COLLECTION_USERS).set(newUser);
-            dispatch( { type: SIGNUP_SUCCESS });
+            await firestore.collection(constants.REF_COLLECTION_USERS).set(newUser);
+            dispatch(authenticationSuccess());
         } catch (error) {
-            dispatch( { type: SIGNUP_FAILURE, error });
+            dispatch(authenticationFailed(error));
         }
     };
 };
 
 export const signIn = (credentials) => {
-    return async (dispatch) => {
+    return async (dispatch, getState, { getFirebase }) => {
+        const firebase = getFirebase();
+
         try {
             await firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password);
-            dispatch( { type: SIGNIN_SUCCESS });
+            dispatch(loginSuccess());
         } catch (error) {
-            dispatch( { type: SIGNIN_FAILURE, error });
+            dispatch(loginFailed(error));
         }
     };
 };
+
+export function authenticationSuccess() {
+    return {
+        type: 'SIGNUP_SUCCESS'
+    };
+}
+export function authenticationFailed(error) {
+    return {
+        type: 'SIGNUP_FAILURE' , error
+    };
+}
+
+export function loginSuccess() {
+    return {
+        type: 'SIGNIN_SUCCESS'
+    };
+}
+export function loginFailed(error) {
+    return {
+        type: 'SIGNIN_FAILURE' , error
+    };
+}
+
