@@ -1,21 +1,15 @@
 import React from 'react';
 import { configure, shallow } from 'enzyme/build';
 import Adapter from 'enzyme-adapter-react-16/build';
-import { SignUp } from '../components/SignUp';
+import SignUp from '../components/SignUp';
 
 configure({ adapter: new Adapter() });
 
 describe('<SignUp />', () => {
     let wrapper;
-    let props;
 
     beforeEach( () => {
-        props = {
-            auth: null,
-            authError: null,
-            signUp: jest.fn()
-        };
-        wrapper = shallow(<SignUp {...props} />);
+        wrapper = shallow(<SignUp />);
     });
 
     it('shows sign up form with 4 input fields and button', () => {

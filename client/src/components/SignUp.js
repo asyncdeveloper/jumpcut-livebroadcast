@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { signUp } from '../store/actions/authActions';
 import { Redirect } from "react-router-dom";
 
-export class SignUp extends Component {
+class SignUp extends Component {
 
     constructor(props){
         super(props);
@@ -21,7 +21,7 @@ export class SignUp extends Component {
         })
     };
 
-    handleSubmit = async (e) => {
+    handleSubmit = (e) => {
         e.preventDefault();
         this.props.signUp(this.state);
     };
@@ -30,9 +30,7 @@ export class SignUp extends Component {
         const { auth, authError } = this.props;
 
         //Redirect if user is logged in
-        if (auth)
-            if (auth.id || auth.uid)
-                return <Redirect to='/' />;
+        if (auth.uid) return <Redirect to='/' />;
 
         return (
             <div className="container">
