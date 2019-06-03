@@ -11,8 +11,7 @@ describe('<Home />', () => {
 
     beforeEach( () => {
         props = {
-            auth: { email: 'samuel@jumpcut.com', uid: 'uuuddiiid' },
-            profile: { firstName: 'Samuel' ,  lastName: 'Oluwaseyi'}
+            auth: { email: 'samuel@jumpcut.com', uid: 'uuuddiiid' }
         };
         wrapper = shallow(<Home {...props} />);
     });

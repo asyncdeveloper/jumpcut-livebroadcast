@@ -27,10 +27,6 @@ jest.mock('../config/firebase', () => ({
         },
         createUserWithEmailAndPassword(email, password) {
             return new Promise((resolve, reject) => {
-                if(email==='testwithresponse@me.com'){
-                    const mockResponse = { user: { uid: 'uuuiiidd' } };
-                    resolve(mockResponse);
-                }
                 if(email === 'test@email.com' && password === 'testpassword'){
                     resolve({ type: 'SIGNUP_SUCCESS' });
                 }
@@ -45,11 +41,7 @@ jest.mock('../config/firebase', () => ({
     }),
     firestore : jest.fn().mockReturnValue({
         collection : () => ({
-            set:() => ({ data: 'MOCK DATA' }),
-            doc:(userId) =>({
-                set:() => ({ data: userId })
-            }),
-            add:(user)=> ({ user })
+            set:() => ({ data: 'MOCK DATA' })
         })
     })
 }));
@@ -58,9 +50,7 @@ describe('AuthActions', () => {
     let store;
 
     beforeEach(() => {
-        store = mockStore({
-            auth: null
-        });
+        store = mockStore({});
     });
 
     it('authActions should signIn user with correct credentials', async () => {
@@ -87,10 +77,7 @@ describe('AuthActions', () => {
     });
 
     it('authActions should signUp user with correct credentials', async () => {
-        const userCredentials = {
-            email: 'testwithresponse@me.com', password: 'testpassword',
-            firstName: 'Samuel' , lastName: 'Adeogun'
-        };
+        const userCredentials = { email: 'test@email.com', password: 'testpassword' };
 
         const expectedResponse =  [{ type: SIGNUP_SUCCESS }];
 
