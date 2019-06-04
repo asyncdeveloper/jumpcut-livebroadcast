@@ -6,14 +6,19 @@ A Platform to stream and broadcast live content
 ### Installation
 clone repository
 
+### Running the client
 ```sh
 cd client
 npm install
+npm start 
 ```
 
 ### Running the server
 ```sh
+cd server
+npm install
 npm start 
 ```
+
 Open browser to
 http://localhost:3000/
