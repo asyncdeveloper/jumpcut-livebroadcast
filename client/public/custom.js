@@ -17,7 +17,8 @@ if(broadcastId) {
     connection.maxRelayLimitPerUser = 1;
     connection.autoCloseEntireSession = true;
     connection.socketURL = '/';
-    connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+    //connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+    connection.socketURL = 'https://jumpcut-livebroadcast-server.herokuapp.com/';
     connection.socketMessageEvent = 'broadcast-demo';
 
     // user need to connect server, so that others can reach him.

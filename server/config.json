@@ -1,0 +1,12 @@
+{
+  "socketURL": "/",
+  "socketMessageEvent": "abcdef",
+  "socketCustomEvent": "ghijkl",
+  "port": "443",
+  "enableLogs": "false",
+  "autoRebootServerOnFailure": "false",
+  "isUseHTTPs": "true",
+  "ssl_key": "/ssl/certificate.key",
+  "ssl_cert": "/ssl/certificate.crt",
+  "ssl_cabundle": "/ssl/certificate.cabundle"
+}
