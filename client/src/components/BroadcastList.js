@@ -4,18 +4,22 @@ import { Link } from "react-router-dom";
 const BroadcastList = ({ broadcasts }) => {
 
     return (
-        <div className="broadcast-list col s12">
+        <div className="broadcast-list">
             { broadcasts.map(broadcast => {
                     return (
-                        <Link to={`/broadcast/${broadcast.title}?id=${broadcast.broadcastId}`}
-                              key={broadcast.id}>
-                            <div className="card z-depth-0 broadcast-summary">
-                                <div className="card-content grey-text text-darken-3">
-                                    <span className="card-title ">{broadcast.title}</span>
-                                    <p>Broadcasting by {broadcast.user.name}</p>
+                        <div className="col s12 m6" key={broadcast.broadcastId}>
+                            <div className="card blue-grey darken-1">
+                                <div className="card-content white-text">
+                                    <span className="card-title">{broadcast.title}</span>
+                                    <p>Broadcasing by {broadcast.user.name}</p>
+                                </div>
+                                <div className="card-action">
+                                    <Link to={`/broadcast/${broadcast.title}?id=${broadcast.broadcastId}`}>
+                                        Start Watching
+                                    </Link>
                                 </div>
                             </div>
-                        </Link>
+                        </div>
                     )
                 })
             }

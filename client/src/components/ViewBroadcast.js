@@ -4,12 +4,11 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { firestoreConnect, isEmpty, isLoaded } from "react-redux-firebase";
 import { endBroadcast } from "../store/actions/broadcastActions";
-import { Redirect } from "react-router-dom";
 
 export class ViewBroadcast extends Component {
 
     static getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        name = name.replace(/[[]/, '[').replace(/[\]]/, ']');
         const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
         const results = regex.exec(window.location.search);
         return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
@@ -41,9 +40,9 @@ export class ViewBroadcast extends Component {
         await this.props.endBroadcast(this.props.broadcast[0].id);
 
         if(this.props.broadcastError === null) {
-            localStorage.removeItem('user',);
+            localStorage.removeItem('user');
             localStorage.removeItem('broadcastId');
-            return <Redirect to="/"/>;
+            this.props.history.push({ pathname: '/' });
         }
     };
 
@@ -56,10 +55,10 @@ export class ViewBroadcast extends Component {
                     { isEmpty(broadcast)
                         ? 'Broadcast not found'
                         : <div className="broadcast-container">
-                            <h1 />
+                            <h1 id="log-info">Broadcast Starting....</h1>
                             <section className="make-center start-broadcast">
                                 <div className="make-center">
-                                    <div className="make-center" id="broadcast-viewers-counter" />
+                                    <p className="make-center" id="broadcast-viewers-counter" />
                                 </div>
                                 <video id="video-preview" controls loop />
                             </section>
@@ -70,11 +69,11 @@ export class ViewBroadcast extends Component {
                                 </section>
                                 : null
                             }
+                            { this.loadScript('https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js',() => {
+                                this.loadScript(`${window.location.origin}/custom.js`,() => {})
+                            })}
                             <Script url="https://rtcmulticonnection.herokuapp.com/node_modules/webrtc-adapter/out/adapter.js"/>
                             <Script url="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js" />
-                            { this.loadScript('https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js',() => {
-                                    this.loadScript(`${window.location.origin}/custom.js`,() => {})
-                            })}
                             <div className="center red-text">
                                 { broadcastError ? <p>{broadcastError}</p> : null }
                             </div>
@@ -92,6 +91,7 @@ const mapStateToProps = (state) => {
     return {
         broadcast: state.firestore.ordered.broadcast,
         auth: state.firebase.auth,
+        broadcastError:state.broadcast.broadcastError
     }
 };
 

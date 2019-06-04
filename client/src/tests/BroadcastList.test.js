@@ -39,8 +39,7 @@ describe('<BroadcastList />', () => {
     });
 
     it('shows broadcasts when passed as props', () => {
-        const broadcastList = wrapper.find('.broadcast-list>Link');
-
+        const broadcastList = wrapper.find('.broadcast-list>.col');
         expect(broadcastList).toHaveLength(2);
     });
 

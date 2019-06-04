@@ -6,7 +6,7 @@ function getUrlParameter(name) {
 }
 
 var broadcastId = getUrlParameter('id');
-const user = localStorage.getItem('user') ? localStorage.getItem('user') : null;
+var user = localStorage.getItem('user') ? localStorage.getItem('user') : null;
 
 if(broadcastId) {
 
@@ -18,12 +18,12 @@ if(broadcastId) {
     connection.autoCloseEntireSession = true;
     connection.socketURL = '/';
     connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
-    connection.socketMessageEvent = 'scalable-media-broadcast-demo';
+    connection.socketMessageEvent = 'broadcast-demo';
 
     // user need to connect server, so that others can reach him.
     connection.connectSocket(function (socket) {
         socket.on('logs', function (log) {
-            document.querySelector('h1').innerHTML = log.replace(/</g, '----').replace(/>/g, '___').replace(/----/g, '(<span style="color:red;">').replace(/___/g, '</span>)');
+            document.getElementById('log-info').innerHTML = log;
         });
 
         // this event is emitted when a broadcast is already created.

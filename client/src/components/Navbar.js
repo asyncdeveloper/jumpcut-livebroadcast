@@ -12,7 +12,7 @@ export const Navbar = (props) => {
         <div className="navbar-fixed">
             <nav className="nav-wrapper grey darken-3">
                 <div className="nav-wrapper">
-                    <Link to='/' className="brand-logo hide-on-med-and-down">Jump Cut Live Broad</Link>
+                    <Link to='/' className="left">JumpCut</Link>
                     {headerLinks}
                 </div>
             </nav>
